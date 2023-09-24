@@ -1,0 +1,345 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>CMPS 260: Module 2 Programming Assignment</title>
+<style>* { font-family: monospace; }</style>
+<script>
+
+// NOTE: You must implement the data structures using the no prototype approach.
+//       This is what the book uses, so you can copy it.
+//       See also: https://it.pointpark.edu/tutorials/no-prototype-vs-prototype/
+
+// NOTE: Please review the following links regularly:
+//       https://it.pointpark.edu/tutorials/arrays-vs-objects/
+//       https://it.pointpark.edu/tutorials/no-prototype-vs-prototype/
+//       https://it.pointpark.edu/tutorials/implementation-vs-interface/
+
+
+
+//--------------------------//
+// The stack data structure //
+//--------------------------//
+console.log("The stack data structure");
+
+// 1. Implement the stack data structure described in the book. Instead of
+//    using 'let items = [];' use 'var items = []'. Note that this
+//    implementation does not use the prototype (see project).
+
+function Stack() {
+  var items =[]; 
+  
+  this.push = function(element) {
+    items.push(element);
+  };
+
+  this.pop = function() {
+    return items.pop();
+  };
+
+  this.peek = function() {
+    return items[items.length-1]
+  };
+
+  this.isEmpty = function() {
+    return items.length == 0;
+  };
+
+  this.size = function() {
+    return items.length;
+  };
+
+  this.clear = function() {
+    items = [];
+  };
+
+  this.print = function() {
+    console.log(items.toString());
+  };
+}
+
+
+// 2. Write a simple test program that shows your stack works.
+let stack = new Stack();
+console.log(stack.isEmpty()); //Outputs true
+
+stack.push(5);
+stack.push(8);
+
+console.log(stack.peek()); // Outputs 8
+
+stack.push(11);
+console.log(stack.size()); // Outputs 3
+console.log(stack.isEmpty()); // outputs false
+
+stack.push(15);
+
+stack.pop();
+stack.pop();
+console.log(stack.size()); // Outputs 2
+stack.print(); // Outputs [5, 8]
+
+//----------------------------------//
+// ECMAScript 6 and the Stack class //
+//----------------------------------//
+console.log("ECMAScript 6 and the Stack class");
+
+// Skip.
+
+
+
+//-------------------------------//
+// Solving problems using stacks //
+//-------------------------------//
+console.log("Solving problems using stacks");
+
+// 1. Use the prompt to ask for a decimal number. Then write a loop that divides
+//    the number by two in every iteration and prints the remainder (0 or 1).
+//    For example, if the number is 5 the remainder is 1 and the number in the
+//    next iteration should be 2 (5/2 rounded down).
+
+// Ask user for a decimal number
+var decNumber = parseFloat(prompt("Please enter a decimal number:"));
+
+// Create an array to store the remainders
+var remainders = [];
+
+// Perform the division and store the remainders in the array
+while (decNumber > 0) {
+  var remainder = Math.floor(decNumber % 2); // Calculate the remainder
+  remainders.push(remainder); // Add remainder to the array
+  decNumber = Math.floor(decNumber / 2); // Integer division by 2
+}
+
+// Print the binary remainder (in reverse order)
+var binaryRep = remainders.reverse().join('');
+console.log(`Binary Remainder: ${binaryRep}`);
+
+
+
+// 2. The algorithm in (1) can be used to convert a decimal number to a binary
+//    number but there is one issue. What is the problem?
+
+// The issue is that without putting in the specific code to have the remainder print in reverse order.
+// The remainder would print out backwards. JFJR
+
+// 3. Solve the problem in (2) using a stack.
+function divideBy2(decNumber) {
+
+var remStack = new Stack(),
+rem,
+binaryString = '';
+
+while (decNumber > 0) { //{1}
+  rem = Math.floor(decNumber % 2); //{2}
+  remStack.push(rem); //{3}
+  decNumber = Math.floor(decNumber / 2); //{4}
+}
+
+while (!remStack.isEmpty()) { //{5}
+  binaryString += remStack.pop().toString();
+}
+return binaryString;
+}
+
+console.log(divideBy2(5));
+console.log(divideBy2(233));
+console.log(divideBy2(10));
+console.log(divideBy2(1000));
+
+
+//--------------------------//
+// The queue data structure //
+//--------------------------//
+console.log("The queue data structure");
+
+// 1. Describe the difference between a stack and a queue. Give one example
+//    where a stack is appropriate and one example where a queue is
+//    appropriate (that has not yet been discussed in class).
+
+// A Stack follows the principle of Last In First Out. The newest elements of a stack are at the top, while  
+// the oldest elements are at the base.  One example of a stack is a stack of chairs.  The first chair of a stack will be
+// the first chair moved or "stacked." the top chair of the stack will be the last one moved.  When it comes time
+// to use the chairs again the first chair moved will be the one at the top of the stack.
+// A Queue follows the principle of First In First Out.  A queue adds new elemets to back of its line and removes elements
+// only from the front of its line.  An example of a queue is the line at the post office.  When you first arrive you are at the back
+// of the line.  As customers are serviced by the post office staff they exit line and you move forward until you reach the point where
+// you exit the line for service.  JFJR
+ 
+
+
+
+//------------------//
+// Creating a queue //
+//------------------//
+console.log("Creating a queue");
+
+// 1. Implement the queue data structure described in the book. Instead of
+//    using 'let items = [];' use 'var items = []'. Note that this
+//    implementation does not use the prototype (see project).
+
+function Queue() {
+  var items = [];
+
+  this.enqueue = function(element) {
+    items.push(element);
+  };
+
+  this.dequeue = function() {
+    return items.shift();
+  };
+
+  this.front = function() {
+    return items[0];
+  };
+
+  this.isEmpty = function() {
+    return items.length == 0;
+  };
+
+  this.size = function () {
+    return items.length;
+  };
+
+  this.print = function() {
+    console.log(items.toString());
+  };
+}
+
+// 2. Write a simple test program that shows your queue works.
+var queue = new Queue();
+console.log(queue.isEmpty()); // Outputs as true
+
+queue.enqueue("John");
+queue.enqueue("Jack");
+queue.enqueue("Camila");
+
+queue.print();
+console.log(queue.size()); // Output as 3
+console.log(queue.isEmpty()); // Outputs as false
+queue.dequeue();
+queue.dequeue();
+queue.print();
+
+
+//--------------------//
+// The priority queue //
+//--------------------//
+console.log("The priority queue");
+
+// The following class is used below.
+
+function QueueElement(element, priority) {
+  this.element = element;
+  this.priority = priority;
+}
+
+// 1. Finish the implementation below for the priority queue. Note that this
+//    implementation does not use the prototype.
+
+function PriorityQueue() {
+  var items = [];
+
+  this.enqueue = function(element, priority) {
+    // we need to create a queue element that stores the priority as well
+    var queueElement = new QueueElement(element, priority);
+
+    var added = false;
+    for (var i=0; i<items.length; i++) {
+      if (queueElement.priority < items[i].priority) {
+        items.splice(i,0,queueElement);
+      added = true;
+      break;
+    }
+  }
+  if (!added) {
+    items.push(queueElement);
+  }
+};
+  // this is a helper function that is useful for printing
+  this.print = function() {
+    for (var i = 0; i < items.length; i++) {
+      console.log(`${items[i].element} - ${items[i].priority}`);
+    }
+  };
+  
+// add the other methods as well
+    this.enqueue = function(element) {
+    items.push(element);
+  };
+
+  this.dequeue = function() {
+    return items.shift();
+  };
+
+  this.front = function() {
+    return items[0];
+  };
+
+  this.isEmpty = function() {
+    return items.length == 0;
+  };
+
+  this.size = function () {
+    return items.length;
+  };
+
+  this.print = function() {
+    console.log(items.toString());
+};
+}
+// 2. Write a simple test that makes sure the priority queue works as expected.
+var PriorityQueue = new PriorityQueue();
+PriorityQueue.enqueue("John", 2);
+PriorityQueue.enqueue("Jack", 1);
+PriorityQueue.enqueue("Camila", 1);
+PriorityQueue.print();
+
+
+//---------------------------------//
+// The circular queue - Hot Potato //
+//---------------------------------//
+console.log("The circular queue - Hot Potato");
+
+// 1. Finish the implementation for the hot potato game. nameList contains the
+//    names of the participants, and num is how many times the potato is passed
+//    before a participant is ejected from the game (the one that holds the
+//    potato). Note that this is effectively a simulation of the game.
+
+function hotPotato(nameList, num) {
+  // create a queue to store the names
+  var queue = new Queue();
+
+  // add the names to the queue
+  for (var i=0; i<nameList.length; i++) {
+    queue.enqueue(nameList[i]);
+  }
+
+  // while there is more that one name in the queue
+  // dequeue and enqueue a name num times
+  var elminated = '';
+  while (queue.size() > 1) {
+    for (let i=0; i<num; i++){
+      queue.enqueue(queue.dequeue());
+    }
+  // then dequeue one more time, which is the participant that is ejected
+  eliminated = queue.dequeue();
+  console.log(eliminated + ' was elminated from the Hot Potato game.');
+  }// /while (end of while loop)
+
+  // the person that remains in the queue wins
+  return queue.dequeue();
+}
+
+// 2. Test the code in (1).
+var names = ['John', 'Jack', 'Camila', 'Ingrid', 'Carl'];
+var winner = hotPotato(names, 7);
+console.log('The winner is: ' + winner);
+
+
+</script>
+</head>
+<body>
+  See console!
+</body>
+</html>
